@@ -5,7 +5,7 @@
 # Vasilache Dan, AI-252, anul I
 #
 # Features:  type hints, datetime, typing, functions, 
-#            fprint, classes, ranges, user input,
+#            fprint, classes, ranges, user input, significant figures,
 #            nested arrays, error handling, type casting
 #########################################
 
@@ -28,19 +28,19 @@ for i in range(n):
   note.append(nota)
 
 media = sum(note) / n
-print(f"> Media notelor: {media}")
+print(f"> Media notelor: {media:.4g}")
 
 
 # Ex. 3
 dist_total = float(input("Distanta (km): "))
 oil_total = float(input("Benzina (L): "))
 
-print(f"> Eficienta benzinei: {dist_total / oil_total} km/L")
+print(f"> Eficienta benzinei: {(dist_total / oil_total):.5g} km/L")
 
 
 # Ex. 4
 _mins = int(input("Num. minute: "))
-print(f"{math.floor(_mins / 60)} ore, {_mins % 60} minute")
+print(f"> {math.floor(_mins / 60)} ore, {_mins % 60} minute")
 
 
 # Ex. 5
@@ -87,4 +87,4 @@ def f_to_c(temp_f: float) -> float:
 
 
 _temp = float(input("Temperatura (C): "))
-print(f"{c_to_f(_temp)}F")
+print(f"> {(c_to_f(_temp))}F")
