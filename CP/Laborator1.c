@@ -7,33 +7,17 @@ Printf scan codes
 math.h
 */
 
-#include "libsodium/src/libsodium/include/sodium/core.h"
-#include "libsodium/src/libsodium/include/sodium/randombytes.h"
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// #include "libsodium/src/libsodium/include/sodium.h" // Following https://stackoverflow.com/a/39475626
+
 
 #define DEBUG_E 0 // 1 (True) let anything happen; 0 (False) production mode, disable risky behavior
 #define MAGIC 120
 
 const double MATH_PI = 3.14159265358979323846L; // constant double literal
-
-int myrand(uint64_t upper_bound)
-{
-    uint64_t myInt;
-
-    if (sodium_init() < 0) {
-        // libsodium library failed to install
-        return 2; 
-    }
-
-    myInt = randombytes_uniform(upper_bound);
-    return myInt;
-}
-
 
 int main(void){
     srand(time(NULL));
@@ -70,7 +54,7 @@ int main(void){
         printf("Num1 este mai mare.\n");
     }
 
-    uint64_t randnum = myrand(32640);
+    uint64_t randnum = rand();
 
     if ((randnum % 2) && ((long long)num1_) % 2){
         printf("Numarul generat %lu si %Ld sunt ambii impari.\n", randnum, (long long)num1_);
