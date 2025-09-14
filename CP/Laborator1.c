@@ -13,7 +13,6 @@ math.h
 #include <stdlib.h>
 #include <time.h>
 
-
 #define DEBUG_E 0 // 1 (True) let anything happen; 0 (False) production mode, disable risky behavior
 #define MAGIC 120
 
@@ -41,8 +40,7 @@ int main(void){
     printf("Radical:   %.5f\n", sqrt(num1_));
     printf("Puterea:   %.5f\n", pow(num1_, num2_)); // Downcasting from long double to double for pow(), values restricted to 1.7E+308 
     printf("Logaritmul natural: ln(%Lf) = %.8f\n", num1_, log(fabsl(num1_))); // fabsl(double) is the same as math.abs(int), but works for any data type
-    printf("%Lf<<4 = %Ld", num1_, (long long)num1_<<4);
-
+    printf("%Lf<<4 = %Ld\n", num1_, (long long)num1_<<4);
 
     // Operatori logici
     printf("============================\n%21s\n", "# Operatori logici");
@@ -72,7 +70,4 @@ int main(void){
         printf("%c", myarr[i] % MAGIC); // Rudimentary cryptography
     }
     printf("!\n");
-
-
-
 }
