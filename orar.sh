@@ -9,7 +9,7 @@ CURRVER="$(cat index.html | grep "pdf" | grep "Anul_I_S" | grep -oP "(\d{2})\.pd
 echo $CURRVER > LASTVER.txt
 
 if [[ "$CURRVER" == "$OLDVER" ]]; then
-	echo "ORAR: Nothing new." 
+	echo "ORAR: Nothing new. Orar version: $(cat LASTVER.txt)" 
 else
 	echo "[WARNING]: ORAR CLASS SCHEDULE CHANGED TO VERSION $CURRVER"
 fi
