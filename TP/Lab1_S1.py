@@ -1,13 +1,7 @@
 #########################################
-# UTM FCIM Tehnici de Programare
 # LABORATOR nr. 1
 # 11.09.2025
-# Vasilache Dan, AI-252, anul I
-#
-# Features: TODO
 #########################################
-
-# TODO: Make the program work with N integers, not just 2
 
 from typing import List
 

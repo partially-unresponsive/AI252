@@ -1,9 +1,6 @@
 #########################################
-# UTM FCIM Tehnici de Programare
 # LABORATOR nr. 2
 # 11.09.2025
-# AI-252, anul I
-#
 # Features: type hints, f-print, recursive programs
 #########################################
 

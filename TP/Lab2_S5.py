@@ -1,9 +1,6 @@
 #########################################
-# UTM FCIM Tehnici de Programare
 # LABORATOR nr. 2
 # 11.09.2025
-# AI-252, anul I
-#
 # Features: type hints, f-print, custom functions
 #########################################
 
@@ -17,6 +14,7 @@ def check_parity(N: int) -> str:
 
 
 def parity_to_str(mystr: str) -> str:
+    match mystr:
         case "p":
             return "par"
         case "i":

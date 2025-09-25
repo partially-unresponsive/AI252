@@ -1,9 +1,6 @@
 #########################################
-# UTM FCIM Tehnici de Programare
 # LUCRARE PRACTICA nr. 1
 # 04.09.2025
-# AI-252, anul I
-#
 # Features:  type hints, datetime, typing, functions, 
 #            fprint, classes, ranges, user input, significant figures,
 #            nested arrays, error handling, type casting
