@@ -16,8 +16,9 @@ def fibonacci(N: int) -> int: # Recursive version
         
 
 def fibonacciB(N: int) -> int: # For loop version
-    # TODO: Use either dynamic programming or caching for solving the problem. Otherwise it's no fun :P
+    # TODO: Use either dynamic programming or caching for solving the Fibonacci problem. Otherwise it's no fun :P
+    # TODO: Consider using PyPy as the interpreter instead of CPython (https://pypy.org)
     return 0
 
 for i in range(-5, 20):
-    print(fibonacci(i))
+    print(f"F({i}) = {fibonacci(i)}")
