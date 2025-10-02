@@ -38,7 +38,6 @@ int main(void){
         }
     }
 
-
     double negsum = 0;
     double negmedie = 0;
     size_t negcount = 0;

@@ -39,6 +39,6 @@ int main(void){
         for(size_t i = 0; i < maxcount - 1; ++i){
             printf(" %d,", mindex[i]);
         }
-        printf(" si %d.\n", mindex[maxcount - 1]);
+        printf(" %d.\n", mindex[maxcount - 1]);
     }
 }
