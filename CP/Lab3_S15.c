@@ -16,6 +16,7 @@ PROCESSED[n][m] =  { {(6+1)/2, (4+3+8)/3, (6+5)/2},\
 // Have a flag MAT_INCLUDE_SELF that toggles between: False: PROCESSED[0][0] = (6+1)/2 and True: PROCESSED[0][0]=(4+6+1)/3
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define MAT_INCLUDE_SELF 1
 
@@ -41,7 +42,7 @@ int main(){
     double tmpsum = 0;
     double media;
     unsigned int num_neighbors;
-    short int neighbors[4] = {0, 0, 0, 0};
+    bool neighbors[4] = {0, 0, 0, 0};
     for (int i = 0; i < n; ++i){
         for (int j = 0; j < m; ++j){
             // Find all its neighbors possible: (0) mat[i-1][j] + (1) mat[i][j-1] + (2) mat[i][j+1] + (3) mat[i+1][j] != 0 && i+-1, j+-1 in DVA
