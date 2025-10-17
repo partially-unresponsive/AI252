@@ -6,6 +6,7 @@ Algorithm taken from https://base64.guru/learn/base64-algorithm/decode
 import os
 import yaml
 from collections import namedtuple # Only needed to secure the following constants as immutable
+from time import strftime, localtime # For making the last modified date human readable
 
 INPUTFILE = "config.yaml"
 
@@ -25,8 +26,8 @@ def B64decode(encoded_string: str) -> str:
     >>> B64decode("aXp6eWZpeA==")
     'izzyfix'
 
-    >>> B64decode("ZGVlem51dHo")
-    'deeznutz'
+    >>> B64decode("bW96emFyZWxsYQ==")
+    'mozzarella'
 
     >>> [B64decode(ss) for ss in ["cG9tcG8=", "Z2FjaGk=", "dGhlcmUgb25jZSB3YXMgYSBtYW4gZnJvbSBNYXJz"]]
     ['pompo', 'gachi', 'there once was a man from Mars']
@@ -81,6 +82,9 @@ def main():
     if os.path.exists(INPUTFILE): # Ex. 1
         with open(INPUTFILE, 'r') as config_file:
             print("NOTE: Reading config file: {INPUTFILE}")
+            if INPUTFILE.endswith(".yaml"):
+                print("NOTE: Input file has YAML extension") # Ex. 4
+            print(f"NOTE: File last modified on: {strftime('%Y-%m-%d %H:%M:%S', localtime(os.path.getmtime(INPUTFILE)))}") # Ex. 5
             contents_config = yaml.safe_load(config_file)
             print(contents_config)
             print(f"Filesize: {os.path.getsize(INPUTFILE)}") # Ex. 2
