@@ -1,0 +1,7 @@
+rest:
+  url: "https://python.land/data-processing/python-yaml"
+  port: 8443
+
+prime_numbers: [2, 3, 5, 7, 11, 13, 17, 19]
+encoded_string: "ZGVlem51dHo"
+encoding_pattern: "BASE64"
