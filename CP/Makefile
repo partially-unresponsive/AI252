@@ -1,24 +1,24 @@
-CC = gcc
-CFLAGS = -Wall -O3 -lm
-CPPFLAGS = 
+OBJS = Lab3_S15.o
 
-lab2_S4: Lab2_S4.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+PROGRAM = lab3m
 
-lab2_S5: Lab2_S5.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+CC ?= gcc
+CCLD ?= gcc
 
-lab2_S8: Lab2_S8.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+CFLAGS += -O3 -Wall -lm
+LDFLAGS = 
 
-assortment: assortment.c
-	gcc -o ass assortment.c -Wall -O3 -lm
+.PHONY: all clean
+.SUFFIXES: .c .o
 
-lab: Laborator1.c
-	gcc -o lab1 Laborator1.c -Wall -O3 -lm
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
-Laborator1.c:
-	echo "meow"
+$(PROGRAM): $(OBJS)
+	$(CCLD) -o $(PROGRAM) $(OBJS) $(LDFLAGS)
+
+all: $(PROGRAM)
 
 clean:
-	rm lab1
+	rm -vf $(OBJS) $(PROGRAM)
+
