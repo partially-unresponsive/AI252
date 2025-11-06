@@ -15,7 +15,7 @@ def simple_decorator(func, *args, **kwargs):
     def wrapper(*args, **kwargs):
         print(">>> glorp")
         func(*args, **kwargs)
-        print(">>> fungus")
+        print(">>> absolute meowwers")
     return wrapper
 
 
