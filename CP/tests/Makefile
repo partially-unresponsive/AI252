@@ -1,9 +1,24 @@
-CC = gcc
-CFLAGS = -Wall -O3 -lm
-CPPFLAGS =
+OBJS = test_strings.o
 
-test: $(wildcard *.c)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@
+PROGRAM = tests
+
+CC ?= gcc
+CCLD ?= gcc
+
+CFLAGS += -O3 -Wall -lm
+LDFLAGS = 
+
+.PHONY: all clean
+.SUFFIXES: .c .o
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(PROGRAM): $(OBJS)
+	$(CCLD) -o $(PROGRAM) $(OBJS) $(LDFLAGS)
+
+all: $(PROGRAM)
 
 clean:
-	rm labt test
+	rm -vf $(OBJS) $(PROGRAM)
+

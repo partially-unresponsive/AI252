@@ -81,7 +81,7 @@ def B64decode(encoded_string: str) -> str:
 def main():
     if os.path.exists(INPUTFILE): # Ex. 1
         with open(INPUTFILE, 'r') as config_file:
-            print("NOTE: Reading config file: {INPUTFILE}")
+            print(f"NOTE: Reading config file: {INPUTFILE}")
             if INPUTFILE.endswith(".yaml"):
                 print("NOTE: Input file has YAML extension") # Ex. 4
             print(f"NOTE: File last modified on: {strftime('%Y-%m-%d %H:%M:%S', localtime(os.path.getmtime(INPUTFILE)))}") # Ex. 5
@@ -106,7 +106,7 @@ def main():
                 
                 print(f"RESULT: Decoded {encoding_pattern} string is {res}")
     else:
-        print("WARNING: {INPUTFILE} does not seem to exist. Injecting default config contents. Rerun the program.")
+        print(f"WARNING: {INPUTFILE} does not seem to exist. Injecting default config contents. Rerun the program.")
         with open(INPUTFILE, "w") as ss:
             default_config_contents = """
             encoded_string: "ZGVlem51dHo"
