@@ -87,7 +87,7 @@ void bubbleSort(int* v, int n){
 
 
 void shellSort(int* v, int n){
-  // TODO: Figure out how this works
+  // FIXME: This does not work.
   int i, j, h, x;
   h = 1;
   while (h < n){
@@ -112,7 +112,37 @@ void shellSort(int* v, int n){
 
 
 void quickSort(int* v, int st, int dr){
-  // TODO: Implement QuickSort
+  // TODO: Write a better implementation of this
+  int i = st, j = dr;
+  int aux;
+  int pivot = v[(st + dr)/2];
+  while (i <= j){
+    while(v[i] < pivot) {i++;}
+    while(v[j] > pivot) {j--;}
+    if (i <= j){
+      aux = v[i];
+      v[i] = v[j];
+      v[j] = aux;
+      i++;
+      j--;
+    } 
+  }
+  if (st < j) { quickSort(v, st, j); }
+  if (i < dr) { quickSort(v, i, dr);}
+}
+
+void resetArray(int* v){
+  int dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
+  for (int i = 0; i < 10; i++){
+    v[i] = dummy[i];
+  }
+}
+
+void printArray(int* v){
+  for (int i = 0; i < 10; i++){
+    printf("myarr[%d] = %d\n", i, v[i]);
+  }
+  printf("\n");
 }
 
 int main(){
@@ -127,23 +157,28 @@ int main(){
 
   /* TESTING: Algoritmi de sortare */
   int n = 10;
+  // int dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
   int* myarr = (int *) malloc(n * sizeof(int));
-
-  for (int i = 0; i < n; i++) {
-    myarr[i] = i * i * 2 - 3*i - 14 - (i * i * i);
-  }
-
-  for (int i = 0; i < n; i++) {
-    printf("myarr[%d] = %d\n", i, myarr[i]);
-  }
+  resetArray(myarr); // Sets the initial dummy values to myarr
 
   sortareSelectie(myarr, n);
-
   printf("====\nPrelucrat (SelectionSort):\n");
-  for (int i = 0; i < n; i++) {
-    printf("myarr[%d] = %d\n", i, myarr[i]);
-  }
+  printArray(myarr);
 
+  resetArray(myarr);
+  sortareInsertie(myarr, 10);
+  printf("====\nPrelucrat (InsertionSort):\n");
+  printArray(myarr);
 
+  resetArray(myarr);
+  bubbleSort(myarr, 10);
+  printf("====\nPrelucrat (BubbleSort):\n");
+  printArray(myarr);
 
+  resetArray(myarr);
+  shellSort(myarr, 10);
+  printf("====\nFIXME: Prelucrat (ShellSort):\n");
+  printArray(myarr);
+
+  // TODO: Use <time.h> module (or timeit) or similar to test the execution speed of 1000 sorting operations of each sorting algorithm (linear, selection, insertion, quick, merge)
 }
