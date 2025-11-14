@@ -1,4 +1,4 @@
-OBJS = test_strings.o
+OBJS = test_dinamic.o
 
 PROGRAM = tests
 
