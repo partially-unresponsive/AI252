@@ -32,7 +32,7 @@ void get_desc_time(uint64_t ns, char *buf, int len);
     get_desc_time(duration, strSpan, sizeof(strSpan));                      \
     get_desc_time(duration/n, strAvgSpan, sizeof(strAvgSpan));              \
     if (n > 1) {                                                            \
-        printf("%d loops, %s, avg: %s per loop\n", n, strSpan, strAvgSpan); \
+        printf("%d loops,\t %s,\t avg: %s per loop\n", n, strSpan, strAvgSpan); \
     } else {                                                                \
         printf("avg: %s (%lu ns)\n", strAvgSpan, duration);                 \
     }                                                                       \

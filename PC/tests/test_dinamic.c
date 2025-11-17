@@ -117,30 +117,60 @@ void shellSort(int64_t* arr, size_t n){
   }
 }
 
+// Begin quickSort helper functions:
 
-void quickSort(int64_t* arr, size_t l, size_t r){
-  // TODO: Write a better implementation of this
-  size_t i = l, j = r;
-  int64_t aux;
-  int64_t pivot = arr[(l + r)/2];
-  while (i <= j){
-    while(arr[i] < pivot){
-      i++;
-    }
-    while(arr[j] > pivot){
-      j--;
-    }
-    if (i <= j){
-      aux = arr[i];
-      arr[i] = arr[j];
-      arr[j] = aux;
-      i++;
-      j--;
-    } 
-  }
-  if (l < j) { quickSort(arr, l, j); }
-  if (i < r) { quickSort(arr, i, r);}
+int64_t compare(const void* a, const void* b){
+  /* 
+     a < b  => res > 0
+     a > b  => res < 0
+     a == b => res = 0
+  */
+  return (*(int64_t*)a - *(int64_t*)b); // *(int64_t*)a == Turn the void pointer into a int64_t pointer, and then dereference it
 }
+
+void swap(int64_t* a, int64_t* b){
+  int64_t temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+int64_t partition(int64_t* arr, int64_t low, int64_t high){
+  // Initialize pivot to be the first element
+  int64_t pivot = arr[low];
+  int64_t i = low;
+  int64_t j = high;
+
+  while (i < j){
+    // Find the first element greater than the pivot (from starting)
+    while (arr[i] <= pivot && i <= high - 1){
+      i++;
+    }
+
+    // Find the first element smaller than the pivot (from last)
+    while (arr[j] > pivot && j >= low + 1){
+      j--;
+    }
+    if (i < j){
+      swap(&arr[i], &arr[j]);
+    }
+  }
+  swap(&arr[low], &arr[j]);
+  return j;
+}
+
+void quickSort(int64_t* arr, int64_t low, int64_t high){
+  if (low < high){
+    // Call partition function to find partition index (j)
+    int64_t pi = partition(arr, low, high);
+
+    // Recursively call quickSort() for left and right half based on pi
+    quickSort(arr, low, pi - 1);
+    quickSort(arr, pi + 1, high);
+  }
+}
+
+// End quickSort helper functions
+
 
 void merge(int64_t* arr, size_t l, size_t m, size_t r){
   size_t i, j, k; // Index variables for L, R, and arr vectors
@@ -214,10 +244,6 @@ void resetArray(int64_t* arr){
   }
 }
 
-void RNGArray(int64_t* arr, size_t n){
-  /* Fills an array of size n with pseudo-random values */
-
-}
 
 void printArray(int64_t* arr, size_t n){ // Ex. 5
   for (size_t i = 0; i < n; i++){
@@ -226,44 +252,66 @@ void printArray(int64_t* arr, size_t n){ // Ex. 5
   printf("\n");
 }
 
+int64_t* RNGArray(size_t n){
+  /* Dynamically fills an array of size n with pseudo-random values <= 1000 */
+  int64_t* tmp = (int64_t *) malloc(n * sizeof(int64_t));
+  if (tmp == NULL){ // The array wasn't initialized correctly
+    return NULL;
+  }
+  for (size_t i = 0; i < n; i++){
+    tmp[i] = rand() % 1000; // The magic happens here
+  }
+  return tmp; // Returns a pointer!
+}
+
+void XSortTesting(int n, char t){
+  int64_t* arr = RNGArray(n);
+  if (arr == NULL){
+    printf("[ERROR]: Dynamic array failed to initialize.\n");
+  } else {
+    switch (t) {
+      case 'm':
+        mergeSort(arr, 0, n - 1);
+        break;
+      case 'q':
+        quickSort(arr, 0, n - 1);
+        break;
+      case 'b':
+        bubbleSort(arr, n);
+        break;
+      case 's':
+        selectionSort(arr, n);
+        break;
+      case 'i':
+        insertionSort(arr, n);
+        break;
+      default:
+        printf("[ERROR]: Sorting algorithm not defined.\n");
+    }
+    free(arr); // Ex. 6
+    arr = NULL;
+  }
+}
+
 int main(){
   srand(time(NULL));
+  int n = 1000; // Number of values in each array
+
   // TODO: Create my own marks (similar to TODO:) which light up in different colors, like DONE: (green highlight) for completed tasks and RANT: (black highlight) for rants (they will be necessary :p)
 
-  /* TESTING: Algoritmi de sortare */
-  int n = 10;
-  // int dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
-  int64_t* myarr = (int64_t*) malloc(n * sizeof(int64_t)); // DONE: Ex. 1
-  resetArray(myarr); // Sets the initial dummy values to myarr
-
-  selectionSort(myarr, n);
-  printf("====\nPrelucrat (SelectionSort):\n");
-  printArray(myarr, n);
-
-  resetArray(myarr);
-  insertionSort(myarr, 10);
-  printf("====\nPrelucrat (InsertionSort):\n");
-  printArray(myarr, n);
-
-  resetArray(myarr);
-  bubbleSort(myarr, 10);
-  printf("====\nPrelucrat (BubbleSort):\n");
-  printArray(myarr, n);
-
-  resetArray(myarr);
-  shellSort(myarr, 10);
-  printf("====\nFIXME: Prelucrat (ShellSort):\n");
-  printArray(myarr, n);
-
-  resetArray(myarr);
-  mergeSort(myarr, 0, n - 1);
-  printf("====\nPrelucrat (MergeSort):\n");
-  printArray(myarr, n);
-
-  // TODO: Use <time.h> module (or timeit) or similar to test the execution speed of 1000 sorting operations of each sorting algorithm (linear, selection, insertion, quick, merge)
   // Using the timeit.h module from https://github.com/stephen-wang/ctimeit/blob/59cda8c5831d704a96a0664a36280af05c0f74e7/timeit.h
-
-  timeit(1000, mergeSort, myarr, 0, n - 1);
-
-  free(myarr); // Ex. 6
+  printf("RepeatCount: ");
+  int repeatCount;
+  scanf("%d", &repeatCount);
+  
+  printf("MergeSort: ");
+  timeit(repeatCount, XSortTesting, n, 'm');
+  printf("QuickSort: ");
+  timeit(repeatCount, XSortTesting, n, 'q');
+  printf("InsertionSort: ");
+  timeit(repeatCount, XSortTesting, n, 'i');
+  printf("SelectionSort: ");
+  timeit(repeatCount, XSortTesting, n, 's');
+  printf("BubbleSort: ");
+  timeit(repeatCount, XSortTesting, n, 'b');
 }
