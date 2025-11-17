@@ -18,30 +18,32 @@ int64_t** allocMatrix(size_t rows, size_t columns){ // rows = number lines, colu
   return a;
 }
 
-void printMatrix(int** mat, int rows, int columns){
+void printMatrix(int64_t** mat, size_t rows, size_t columns){
   /* Prints out a matrix of rows x columns size */
-  for (int i = 0; i < rows; i++){
-    for (int j = 0; j < columns; j++){
-      printf("%d\t", mat[i][j]);
+  for (size_t i = 0; i < rows; i++){
+    for (size_t j = 0; j < columns; j++){
+      printf("%ld\t", mat[i][j]);
       printf("\n");
     }
   }
   return;
 }
 
-void digits(int num, int n, int* c){
+void digits(int64_t num, size_t n, uint64_t* c){
   /* num = number (49642), n = num. digits (5), int* c = pointer to be written to ([4, 9, 6, 4, 2]) */
-  for (int k = n; k >= 0; k--){
+  for (size_t k = n; k >= 0; k--){
     c[k] = num % 10;
     num = num / 10;
   }
 }
 
+// TODO: Figure out how modulus (%) works for negative values
+
 /* Ex. 4 Algoritmi de sortare */
 
-void selectionSort(int* arr, int n){
+void selectionSort(int64_t* arr, size_t n){
   // Generic selection sort algorithm
-  int i, j, min, aux;
+  int64_t i, j, min, aux;
   for (i = 0; i < n - 1; i++){
     min = i;
     for (j = i + 1; j < n; j++){
@@ -58,9 +60,9 @@ void selectionSort(int* arr, int n){
 }
 
 
-void insertionSort(int* arr, int n){
+void insertionSort(int64_t* arr, size_t n){
   // Generic insertion sorting algorithm
-  int i, j, aux;
+  int64_t i, j, aux;
   for (i = 1; i < n; i++){
     j = i;
     while (j > 0 && arr[j-1] > arr[j]){
@@ -72,15 +74,15 @@ void insertionSort(int* arr, int n){
   }
 }
 
-void bubbleSort(int* arr, int n){
+void bubbleSort(int64_t* arr, size_t n){
   // TODO: Figure out how this works
   int ok = 1;
-  int j = 0;
-  int aux;
+  size_t j = 0;
+  int64_t aux;
   while (ok){
     ok = 0;
     j++;
-    for (int i = 0; i < n - j; i++){
+    for (size_t i = 0; i < n - j; i++){
       if (arr[i] > arr[i + 1]){
         aux = arr[i];
         arr[i] = arr[i+1];
@@ -91,9 +93,9 @@ void bubbleSort(int* arr, int n){
   }
 }
 
-void shellSort(int* arr, int n){
+void shellSort(int64_t* arr, size_t n){
   // FIXME: This does not work.
-  int i, j, h, x;
+  size_t i, j, h, x;
   h = 1;
   while (h < n){
     h = h*3 + 1;
@@ -116,11 +118,11 @@ void shellSort(int* arr, int n){
 }
 
 
-void quickSort(int* arr, int l, int r){
+void quickSort(int64_t* arr, size_t l, size_t r){
   // TODO: Write a better implementation of this
-  int i = l, j = r;
-  int aux;
-  int pivot = arr[(l + r)/2];
+  size_t i = l, j = r;
+  int64_t aux;
+  int64_t pivot = arr[(l + r)/2];
   while (i <= j){
     while(arr[i] < pivot){
       i++;
@@ -140,13 +142,13 @@ void quickSort(int* arr, int l, int r){
   if (i < r) { quickSort(arr, i, r);}
 }
 
-void merge(int* arr, int l, int m, int r){
-  int i, j, k; // Index variables for L, R, and arr vectors
-  int n1 = m - l + 1; // End index for L?
-  int n2 = r - m; // End index for R?
+void merge(int64_t* arr, size_t l, size_t m, size_t r){
+  size_t i, j, k; // Index variables for L, R, and arr vectors
+  size_t n1 = m - l + 1; // End index for L?
+  size_t n2 = r - m; // End index for R?
 
   // Create temp arrays
-  int L[n1], R[n2]; // L[] is the left array, and R[] is the right array. They should recursively merge until they are sorted
+  int64_t L[n1], R[n2]; // L[] is the left array, and R[] is the right array. They should recursively merge until they are sorted
 
   // Copy data to temp arrays L[] and R[]
   for (i = 0; i < n1; i++){
@@ -187,12 +189,12 @@ void merge(int* arr, int l, int m, int r){
   return;
 }
 
-void mergeSort(int* arr, int l, int r){
+void mergeSort(int64_t* arr, size_t l, size_t r){
   // l => starting index (0), r => ending index (arr_size - 1)
   // Popular merge sorting algorithm, known for its efficiency and stability
   // Recursive implementation 
   if (l < r){ // Only perform the sort if start < end for the indexes, which should usually be the case unless array OOB
-    int m = l + (r - l) / 2; // m => The middle point of the split, will probably floor() the value rather than ceil() it, so an array of 7 indices will get split into a size of 3 and 4
+    size_t m = l + (r - l) / 2; // m => The middle point of the split, will probably floor() the value rather than ceil() it, so an array of 7 indices will get split into a size of 3 and 4
     // Sort first and second halves
     mergeSort(arr, l, m);
     mergeSort(arr, m + 1, r); // This is why we need the l and r variables: we don't perform the merging operation on the *entire* array, just on both halves of it consecutively
@@ -205,21 +207,21 @@ void mergeSort(int* arr, int l, int r){
   return;
 }
 
-void resetArray(int* arr){
-  int dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
-  for (int i = 0; i < 10; i++){
+void resetArray(int64_t* arr){
+  int64_t dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
+  for (size_t i = 0; i < 10; i++){
     arr[i] = dummy[i];
   }
 }
 
-void RNGArray(int* arr, int n){
+void RNGArray(int64_t* arr, size_t n){
   /* Fills an array of size n with pseudo-random values */
 
 }
 
-void printArray(int* arr, int n){ // Ex. 5
-  for (int i = 0; i < n; i++){
-    printf("%d  ", arr[i]);
+void printArray(int64_t* arr, size_t n){ // Ex. 5
+  for (size_t i = 0; i < n; i++){
+    printf("%ld  ", arr[i]);
   }
   printf("\n");
 }
@@ -231,7 +233,7 @@ int main(){
   /* TESTING: Algoritmi de sortare */
   int n = 10;
   // int dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
-  int* myarr = (int *) malloc(n * sizeof(int)); // DONE: Ex. 1
+  int64_t* myarr = (int64_t*) malloc(n * sizeof(int64_t)); // DONE: Ex. 1
   resetArray(myarr); // Sets the initial dummy values to myarr
 
   selectionSort(myarr, n);
