@@ -17,9 +17,11 @@ int64_t** allocMatrix(size_t rows, size_t columns){ // rows = number lines, colu
     return NULL;
   }
   for (size_t i = 0; i < rows; i++){
-    if (a[i] == NULL){ // Checks the array is allocated
+    int64_t* tmp = (int64_t *) malloc(columns * sizeof(int64_t));
+    if (tmp == NULL){ // Checks the array is allocated
       return NULL;
     } 
+    a[i] = tmp;
   }
   return a;
 }
