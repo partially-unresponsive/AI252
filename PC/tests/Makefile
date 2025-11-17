@@ -1,4 +1,4 @@
-OBJS = test_dinamic.o
+OBJS = test_dinamic.o timeit.o
 
 PROGRAM = tests
 
