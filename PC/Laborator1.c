@@ -44,7 +44,6 @@ int main(void){
     }
 
     uint64_t randnum = rand();
-
     if ((randnum % 2) && ((long long)num1_) % 2){
         printf("Numarul generat %lu si %Ld sunt ambii impari.\n", randnum, (long long)num1_);
     } else if ((randnum % 2) == ((long long)num1_) % 2){
