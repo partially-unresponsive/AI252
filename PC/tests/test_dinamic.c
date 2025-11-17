@@ -4,6 +4,12 @@
 #include <time.h>
 #include <stdint.h>
 
+void swap(int64_t* a, int64_t* b){
+  int64_t temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
 int64_t** allocMatrix(size_t rows, size_t columns){ // rows = number lines, columns = number columns
   /* Dynamically allocates a matrix of rows x columns size, but does not give any of its elements values */
   int64_t** a = (int64_t **) malloc(rows * sizeof(int64_t*));
@@ -42,8 +48,8 @@ void digits(int64_t num, size_t n, uint64_t* c){
 /* Ex. 4 Algoritmi de sortare */
 
 void selectionSort(int64_t* arr, size_t n){
-  // Generic selection sort algorithm
-  int64_t i, j, min, aux;
+  /* Generic selectionSort algorithm, slightly faster than insertionSort */ 
+  int64_t i, j, min;
   for (i = 0; i < n - 1; i++){
     min = i;
     for (j = i + 1; j < n; j++){
@@ -52,41 +58,37 @@ void selectionSort(int64_t* arr, size_t n){
       }
     }
     if (min != i){
-      aux = arr[i];
-      arr[i] = arr[min];
-      arr[min] = aux;
+      swap(&arr[i], &arr[min]);
     }
   }
 }
 
 
 void insertionSort(int64_t* arr, size_t n){
-  // Generic insertion sorting algorithm
-  int64_t i, j, aux;
+  /* Generic insertion sorting algorithm, slightly faster than bubbleSort */
+  int64_t i, j;
   for (i = 1; i < n; i++){
     j = i;
     while (j > 0 && arr[j-1] > arr[j]){
-      aux = arr[j];
-      arr[j] = arr[j-1];
-      arr[j-1] = aux;
+      // aux = arr[j];
+      // arr[j] = arr[j-1];
+      // arr[j-1] = aux;
+      swap(&arr[j], &arr[j-1]);
       j--;
     }
   }
 }
 
 void bubbleSort(int64_t* arr, size_t n){
-  // TODO: Figure out how this works
+  /* Simplistic sorting algorithm, just checks if arr[i] > arr[i+1], and swaps them if they are */
   int ok = 1;
   size_t j = 0;
-  int64_t aux;
   while (ok){
     ok = 0;
     j++;
     for (size_t i = 0; i < n - j; i++){
       if (arr[i] > arr[i + 1]){
-        aux = arr[i];
-        arr[i] = arr[i+1];
-        arr[i+1] = aux;
+        swap(&arr[i], &arr[i+1]);
         ok = 1;
       }
     }
@@ -94,25 +96,22 @@ void bubbleSort(int64_t* arr, size_t n){
 }
 
 void shellSort(int64_t* arr, size_t n){
-  // FIXME: This does not work.
-  size_t i, j, h, x;
-  h = 1;
-  while (h < n){
-    h = h*3 + 1;
-  }
-  while(h >= 1){
-    h = h / 3;
-    for (i = h; i < n; i++){
-      x = arr[i];
-      j = i;
-      while (arr[j-h] > x){
-        arr[j] = arr[j-h];
-        j = j - h;
-        if (j < h){
-          break;
-        }
-        arr[j] = x;
+  /* Sorting algorithm improving on insertionSort */
+  for (size_t gap = n / 2; gap > 0; gap /= 2){
+    // Perform a "gapped" insertion sort for this gap size
+    for (int64_t i = gap; i < n; i++){
+      // Current element to be placed correctly
+      int64_t temp = arr[i];
+      size_t j = i;
+
+      // Shift elements that are greater than temp to make space
+      while (j >= gap && arr[j - gap] > temp){
+        arr[j] = arr[j - gap];
+        j -= gap;
       }
+
+      // Place temp in its correct location
+      arr[j] = temp;
     }
   }
 }
@@ -126,12 +125,6 @@ int64_t compare(const void* a, const void* b){
      a == b => res = 0
   */
   return (*(int64_t*)a - *(int64_t*)b); // *(int64_t*)a == Turn the void pointer into a int64_t pointer, and then dereference it
-}
-
-void swap(int64_t* a, int64_t* b){
-  int64_t temp = *a;
-  *a = *b;
-  *b = temp;
 }
 
 int64_t partition(int64_t* arr, int64_t low, int64_t high){
@@ -171,6 +164,7 @@ void quickSort(int64_t* arr, int64_t low, int64_t high){
 
 // End quickSort helper functions
 
+// Begin mergeSort helper functions
 
 void merge(int64_t* arr, size_t l, size_t m, size_t r){
   size_t i, j, k; // Index variables for L, R, and arr vectors
@@ -237,13 +231,7 @@ void mergeSort(int64_t* arr, size_t l, size_t r){
   return;
 }
 
-void resetArray(int64_t* arr){
-  int64_t dummy[10] = {3, -4, 8, -12, 503, -32, 44, 12, 950, 420};
-  for (size_t i = 0; i < 10; i++){
-    arr[i] = dummy[i];
-  }
-}
-
+// End mergeSort helper functions
 
 void printArray(int64_t* arr, size_t n){ // Ex. 5
   for (size_t i = 0; i < n; i++){
@@ -285,6 +273,9 @@ void XSortTesting(int n, char t){
       case 'i':
         insertionSort(arr, n);
         break;
+      case 'h':
+        shellSort(arr, n);
+        break;
       default:
         printf("[ERROR]: Sorting algorithm not defined.\n");
     }
@@ -303,15 +294,19 @@ int main(){
   printf("RepeatCount: ");
   int repeatCount;
   scanf("%d", &repeatCount);
+
   
-  printf("MergeSort: ");
-  timeit(repeatCount, XSortTesting, n, 'm');
-  printf("QuickSort: ");
-  timeit(repeatCount, XSortTesting, n, 'q');
+  printf("BubbleSort: ");
+  timeit(repeatCount, XSortTesting, n, 'b');
   printf("InsertionSort: ");
   timeit(repeatCount, XSortTesting, n, 'i');
   printf("SelectionSort: ");
   timeit(repeatCount, XSortTesting, n, 's');
-  printf("BubbleSort: ");
-  timeit(repeatCount, XSortTesting, n, 'b');
+  printf("MergeSort: ");
+  timeit(repeatCount, XSortTesting, n, 'm');
+  printf("ShellSort: ");
+  timeit(repeatCount, XSortTesting, n, 'h');
+  printf("QuickSort: ");
+  timeit(repeatCount, XSortTesting, n, 'q');
+  // TODO: Make this work for 2D matrices, not just 1D arrays (required)
 }
