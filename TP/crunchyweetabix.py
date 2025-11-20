@@ -1,4 +1,4 @@
-from izzyutils.batch1.meowwers import skycake
+from izzyutils.batch1.meowwers import skycake, constrained_sum_sample_pos
 
 def angels(n):
     """Return the squares of all numbers from 1 until (inclusive) n >= 0.
@@ -38,8 +38,12 @@ def angels(n):
     return sum([i**2 for i in range(n+1)])
 
 
+def main():
+    print(constrained_sum_sample_pos(4, 420))
+
 
 if __name__ == "__main__":
     skycake()
+    main()
     import doctest
     doctest.testmod()

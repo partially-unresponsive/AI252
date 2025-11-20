@@ -11,7 +11,7 @@ from time import strftime, localtime, time # For making the last modified date h
 INPUTFILE = "config.yaml"
 
 Constants = namedtuple('Constants', ['POSSIBLE_ENCODINGS', 'BASE64ALPHABET'])
-constants = Constants(POSSIBLE_ENCODINGS = {"BASE64":"implemented", 
+CONSTS = Constants(POSSIBLE_ENCODINGS = {"BASE64":"implemented", 
                      "ROT13" :"WIP",
                      "CAESAR":"WIP"}, 
                      BASE64ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
@@ -45,7 +45,7 @@ def B64decode(encoded_string: str) -> str:
     if type(encoded_string) != type("meow"):
         raise ValueError("B64decode expects a string type as input")
     for c in encoded_string:
-        if c not in constants.BASE64ALPHABET: # Alternatively, you can use if re.search(r"^[A-Za-z0-9+/]+={0,2}$", encoded_string): ...
+        if c not in CONSTS.BASE64ALPHABET: # Alternatively, you can use if re.search(r"^[A-Za-z0-9+/]+={0,2}$", encoded_string): ...
             raise ValueError("B64decode input string has characters alien to BASE64")
     if encoded_string.strip()=="":
         return ""
@@ -55,11 +55,11 @@ def B64decode(encoded_string: str) -> str:
     for c in encoded_string:
         if c == "=": # Only used for padding, not encoding
             continue
-        elif c not in constants.BASE64ALPHABET:
+        elif c not in CONSTS.BASE64ALPHABET:
             continue
         else:
-            # print(f"{c}: {constants.BASE64ALPHABET.index(c)}")
-            indx = constants.BASE64ALPHABET.index(c)
+            # print(f"{c}: {CONSTS.BASE64ALPHABET.index(c)}")
+            indx = CONSTS.BASE64ALPHABET.index(c)
             binaries.append(dec_to_binary(indx)[2:])
             # print(dec_to_binary(indx)[2:])
 
@@ -108,7 +108,7 @@ def main():
                 print("="*26)
                 print(f"RESULT:\n{encoded_string} \n{res}")
     else:
-        print("WARNING: {INPUTFILE} does not seem to exist. Injecting default config contents. Rerun the program.")
+        print(f"WARNING: {INPUTFILE} does not seem to exist. Injecting default config contents. Rerun the program.")
         with open(INPUTFILE, "w") as ss:
             default_config_contents = """
             encoded_string: "ZGVlem51dHo"

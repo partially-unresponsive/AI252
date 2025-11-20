@@ -18,7 +18,7 @@ PROCESSED[n][m] =  { {(6+1)/2, (4+3+8)/3, (6+5)/2},\
 #include <stdio.h>
 #include <stdbool.h>
 
-#define MAT_INCLUDE_SELF 1
+#define MAT_INCLUDE_SELF 0
 
 int main(){
     // STEP 1. Input
