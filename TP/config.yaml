@@ -3,5 +3,5 @@ rest:
   port: 8443
 
 prime_numbers: [2, 3, 5, 7, 11, 13, 17, 19]
-encoded_string: "ZGVlem51dHo"
+encoded_string: "dGhlcmUgb25jZSB3YXMgYSBtYW4gZnJvbSBNYXJz"
 encoding_pattern: "BASE64"

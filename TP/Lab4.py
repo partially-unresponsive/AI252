@@ -6,7 +6,7 @@ Algorithm taken from https://base64.guru/learn/base64-algorithm/decode
 import os
 import yaml
 from collections import namedtuple # Only needed to secure the following constants as immutable
-from time import strftime, localtime # For making the last modified date human readable
+from time import strftime, localtime, time # For making the last modified date human readable
 
 INPUTFILE = "config.yaml"
 
@@ -81,10 +81,12 @@ def B64decode(encoded_string: str) -> str:
 def main():
     if os.path.exists(INPUTFILE): # Ex. 1
         with open(INPUTFILE, 'r') as config_file:
-            print("NOTE: Reading config file: {INPUTFILE}")
+            print(f"NOTE: Reading config file: {INPUTFILE}")
             if INPUTFILE.endswith(".yaml"):
                 print("NOTE: Input file has YAML extension") # Ex. 4
-            print(f"NOTE: File last modified on: {strftime('%Y-%m-%d %H:%M:%S', localtime(os.path.getmtime(INPUTFILE)))}") # Ex. 5
+            lastmodified = os.path.getmtime(INPUTFILE)
+            currtime = time()
+            print(f"NOTE: File last modified on: {strftime('%Y-%m-%d %H:%M:%S', localtime(lastmodified))}, which was {((currtime - lastmodified) / 86400):{3}.{2}} days ago.") # Ex. 5
             contents_config = yaml.safe_load(config_file)
             print(contents_config)
             print(f"Filesize: {os.path.getsize(INPUTFILE)}") # Ex. 2
@@ -100,11 +102,11 @@ def main():
                     case "ROT13":
                         raise Error("TODO: ROT13 encoding not implemented yet.")
                     case "CAESAR":
-                        raise Error("TODO: ROT13 encoding not implemented yet.")
+                        raise Error("TODO: CAESAR encoding not implemented yet.")
                     case (_): # Default "match anything" case statement
                         return 1
-                
-                print(f"RESULT: Decoded {encoding_pattern} string is {res}")
+                print("="*26)
+                print(f"RESULT:\n{encoded_string} \n{res}")
     else:
         print("WARNING: {INPUTFILE} does not seem to exist. Injecting default config contents. Rerun the program.")
         with open(INPUTFILE, "w") as ss:
@@ -120,3 +122,4 @@ if __name__ == "__main__":
     import doctest
     main()
     doctest.testmod()
+
