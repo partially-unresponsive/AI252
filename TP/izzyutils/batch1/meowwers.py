@@ -1,7 +1,6 @@
 def skycake():
   """Dummy text to practice package import."""
-  print("SkyCake evolves to stay just beyond the cognitive reach of " +
-  "the bulk of men. SKYCAKE!!")
+  print("SkyCake evolves to stay just beyond the cognitive reach of the bulk of men. SKYCAKE!!")
 
 def dec_to_binary(n: int) -> str:
   """Safely converts a decimal (base 10) number to binary (base 2) through f-strings."""
