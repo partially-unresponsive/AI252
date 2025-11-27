@@ -1,4 +1,6 @@
 """
+Taken from examples on Textual documentation.
+
 An implementation of a classic calculator, with a layout inspired by macOS calculator.
 
 Works like a real calculator. Click the buttons or press the equivalent keys.
