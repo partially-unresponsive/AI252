@@ -101,6 +101,7 @@ def main():
 
     
   # NOTE: END LAB 5 SOLUTION
+# TODO: Utilize a different Textual example solution than markdown.py, including a button to hot reload the code (Lab5.py) to regenerate the solutions. 
   
 
 

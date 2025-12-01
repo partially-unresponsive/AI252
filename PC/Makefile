@@ -1,6 +1,6 @@
-OBJS = Lab3_S15.o
+OBJS = Lab4.o timeit.o
 
-PROGRAM = lab3m
+PROGRAM = lab4
 
 CC ?= gcc
 CCLD ?= gcc
@@ -21,4 +21,4 @@ all: $(PROGRAM)
 
 clean:
 	rm -vf $(OBJS) $(PROGRAM)
-
+	
