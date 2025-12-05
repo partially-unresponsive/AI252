@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+// #include <math.h>
 
 #define END_LOOP_FEED 666
 
@@ -267,7 +268,7 @@ int64_t *RNGArray(size_t n) {
     return NULL;
   }
   for (size_t i = 0; i < n; i++) {
-    tmp[i] = rand() % 1000; // The magic happens here
+    tmp[i] = rand() % 256; // The magic happens here
   }
   return tmp; // Returns a pointer!
 }
@@ -371,58 +372,109 @@ int main() {
   // START LAB 4.c KULEV
   /* START Matrix support area */
 
-  size_t rows, cols;
+  // size_t rows, cols;
   char choice;
   printf("Alegeti metoda de sortare:\n- (B)ubbleSort\n- (I)nsertionSort\n- (S)electionSort\n- (M)ergeSort\n- S(h)ellSort\n- (Q)uickSort\nAlegere: ");
   scanf("%c", &choice);
 
-  printf("Dimensiuni tablou (n, m): ");
-  scanf("%zu %zu", &rows, &cols);
-  printf("rows: %zu, cols: %zu\n", rows, cols);
+  // printf("Dimensiuni tablou (n, m): ");
+  // scanf("%zu %zu", &rows, &cols);
+  // printf("rows: %zu, cols: %zu\n", rows, cols);
 
-  int64_t **res = allocMatrix(rows, cols); // Ex. 1
-  int64_t last_row, last_col;
-  last_row = -1;
-  last_col = -1;
-  // short int ok = 1;
+  // int64_t **res = allocMatrix(rows, cols); // Ex. 1
+  // int64_t last_row, last_col;
+  // last_row = -1;
+  // last_col = -1;
+  // // short int ok = 1;
 
-  // while (ok) {
-    for (size_t i = 0; i < rows; i++) { // Ex. 2
-      for (size_t j = 0; j < cols; j++) {
-        printf("arr[%zu][%zu]: ", i, j);
-        scanf("%ld", &res[i][j]);
-        // TODO: Allow for an "end of feed" character that tells the program to
-        // populate the remaining slots with RNG values
-        if (res[i][j] == END_LOOP_FEED) { // Assume the user wants the rest of
-                                          // the values to be generated
-          last_row = i;
-          last_col = j;
-          // ok = -1;
-          break;
-        }
-      }
-    // }
-    // ok = -1;
+  // // while (ok) {
+  //   for (size_t i = 0; i < rows; i++) { // Ex. 2
+  //     for (size_t j = 0; j < cols; j++) {
+  //       printf("arr[%zu][%zu]: ", i, j);
+  //       scanf("%ld", &res[i][j]);
+  //       // TODO: Allow for an "end of feed" character that tells the program to
+  //       // populate the remaining slots with RNG values
+  //       if (res[i][j] == END_LOOP_FEED) { // Assume the user wants the rest of
+  //                                         // the values to be generated
+  //         last_row = i;
+  //         last_col = j;
+  //         // ok = -1;
+  //         break;
+  //       }
+  //     }
+  //   // }
+  //   // ok = -1;
+  // }
+
+  size_t max_indx;
+  printf("Dimensiune tablou: ");
+  scanf("%zu", &max_indx);
+  // int64_t *res = (int64_t *) malloc(max_indx * sizeof(int64_t)); // Ex. 1
+  int64_t *res = calloc(max_indx, sizeof(int64_t));
+
+  int64_t last_indx = 0;
+  int64_t tmp;
+  for (size_t i = 0; i < max_indx; i++){
+    printf("arr[%zu]: ", i);
+    scanf("%zu", &tmp); // Ex. 2
+    res[i] = tmp;
+    if (res[i] == END_LOOP_FEED) { // Assume the user wants the rest of
+        //                                   // the values to be generated
+      last_indx = i;
+      break;
+    }
   }
-
   /* Populate the remaining arrays with RNG values */
+  int64_t *tmp_a = RNGArray(max_indx - last_indx); // Ex. 3
+  for (size_t i = 0; i < max_indx - last_indx; i++){
+    printf("tmp_a[%zu] = %zu\n", i, tmp_a[i]);
+    res[i + last_indx] = tmp_a[i];
+  }
+  printf("Nesortat: \n");
+  printArray(res, max_indx);
 
-  printf("(Last_row, last_col): (%zu, %zu)\n", last_row, last_col); // FIXME: Displays (Last_row, last_col): (18446744073709551615, 18446744073709551615)
+  FILE *fp;
+  fp = fopen("unsorted.txt", "w");
+
+  for (size_t i = 0; i < max_indx; i++){
+    fprintf(fp, "%zu %zu\n", i, res[i]);
+  }
+  fclose(fp);
+
+  system("gnuplot -e \"set terminal png; set output 'unsorted.png'; plot 'unsorted.txt' with lines\"");
+
+
+  XSortArray(res, max_indx, choice); // Ex. 4
+  printf("Sortat: \n");
+  printArray(res, max_indx); // Ex. 5
+  fp = fopen("sorted.txt", "w");
+
+  for (size_t i = 0; i < max_indx; i++){
+    fprintf(fp, "%zu %zu\n", i, res[i]);
+  }
+  fclose(fp);
+
+  system("gnuplot -e \"set terminal png; set title 'PC Laborator 4: Algoritmi sortare'; set output 'sorted.png'; set grid; plot 'sorted.txt' with lines title 'Sortat', 'unsorted.txt' with lines title 'Nesortat' \"");
+  free(res); // Ex. 6
+
+  // printf("(Last_row, last_col): (%zu, %zu)\n", last_row, last_col); // FIXME: Displays (Last_row, last_col): (18446744073709551615, 18446744073709551615)
 
   // TODO: Figure out whether to linearize the matrix (treat all the rows of a matrix as one long array) or to sort each individual array within the matrix. This is ambiguous, so I will propose the latter.
 
   // TODO: Ex. 3
 
 
-  printf("Nesortat:\n");
-  printMatrix(res, rows, cols);
 
-  for (size_t i = 0; i < rows; i++){ // Ex. 4
-    XSortArray(res[i], cols, choice);
-  }
 
-  printf("Sortat: \n");
-  printMatrix(res, rows, cols); // Ex. 5
-  free(res); // Ex. 6
+  // printf("Nesortat:\n");
+  // printMatrix(res, rows, cols);
+
+  // for (size_t i = 0; i < rows; i++){ // Ex. 4
+  //   XSortArray(res[i], cols, choice);
+  // }
+
+  // printf("Sortat: \n");
+  // printMatrix(res, rows, cols); // Ex. 5
+  // free(res); // Ex. 6
   /* END Matrix support area */
 }
