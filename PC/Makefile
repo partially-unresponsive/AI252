@@ -1,6 +1,6 @@
-OBJS = Lab4.o timeit.o
+OBJS = Lab5.o
 
-PROGRAM = lab4
+PROGRAM = lab5
 
 CC ?= gcc
 CCLD ?= gcc
