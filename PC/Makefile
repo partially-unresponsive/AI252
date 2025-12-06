@@ -21,4 +21,3 @@ all: $(PROGRAM)
 
 clean:
 	rm -vf $(OBJS) $(PROGRAM)
-	

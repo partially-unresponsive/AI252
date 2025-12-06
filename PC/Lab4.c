@@ -1,10 +1,9 @@
-// #include "timeit.h" // Credit to https://github.com/stephen-wang/ctimeit
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
-// #include <math.h>
+#include "timeit.h" // Credit to https://github.com/stephen-wang/ctimeit
 
 #define END_LOOP_FEED 666
 
@@ -332,6 +331,24 @@ void XSortArray(int64_t* arr, size_t n, char t){
     }
 }
 
+void benchTesting(int repeatCount, int n){
+  // n = Number of samples in each array
+  // Using the timeit.h module from
+  // https://github.com/stephen-wang/ctimeit/blob/59cda8c5831d704a96a0664a36280af05c0f74e7/timeit.h
+  printf("BubbleSort: ");
+  timeit(repeatCount, XSortTesting, n, 'b');
+  printf("InsertionSort: ");
+  timeit(repeatCount, XSortTesting, n, 'i');
+  printf("SelectionSort: ");
+  timeit(repeatCount, XSortTesting, n, 's');
+  printf("MergeSort: ");
+  timeit(repeatCount, XSortTesting, n, 'm');
+  printf("ShellSort: ");
+  timeit(repeatCount, XSortTesting, n, 'h');
+  printf("QuickSort: ");
+  timeit(repeatCount, XSortTesting, n, 'q');
+}
+
 int main() {
   srand(time(NULL));
   
@@ -339,72 +356,14 @@ int main() {
   // colors, like DONE: (green highlight) for completed tasks and RANT: (black
   // highlight) for rants (they will be necessary :p)
 
-  // Using the timeit.h module from
-  // https://github.com/stephen-wang/ctimeit/blob/59cda8c5831d704a96a0664a36280af05c0f74e7/timeit.h
-
-  // NOTE: START BENCH-TESTING ZONE
-
-  // int n = 1000; // Number of values in each array
-
-  // printf("RepeatCount: ");
-  // int repeatCount;
-  // scanf("%d", &repeatCount);
-
-  // printf("BubbleSort: ");
-  // timeit(repeatCount, XSortTesting, n, 'b');
-  // printf("InsertionSort: ");
-  // timeit(repeatCount, XSortTesting, n, 'i');
-  // printf("SelectionSort: ");
-  // timeit(repeatCount, XSortTesting, n, 's');
-  // printf("MergeSort: ");
-  // timeit(repeatCount, XSortTesting, n, 'm');
-  // printf("ShellSort: ");
-  // timeit(repeatCount, XSortTesting, n, 'h');
-  // printf("QuickSort: ");
-  // timeit(repeatCount, XSortTesting, n, 'q');
-
-  // NOTE: END BENCH-TESTING ZONE
-
   // TODO: Make this work for 2D matrices, not just 1D arrays (required)
   // TODO: Create a prettyPrint function to print out the results in a table,
   // use Unicode characters too (so it needs support for wchar?)
 
   // START LAB 4.c KULEV
-  /* START Matrix support area */
-
-  // size_t rows, cols;
   char choice;
   printf("Alegeti metoda de sortare:\n- (B)ubbleSort\n- (I)nsertionSort\n- (S)electionSort\n- (M)ergeSort\n- S(h)ellSort\n- (Q)uickSort\nAlegere: ");
   scanf("%c", &choice);
-
-  // printf("Dimensiuni tablou (n, m): ");
-  // scanf("%zu %zu", &rows, &cols);
-  // printf("rows: %zu, cols: %zu\n", rows, cols);
-
-  // int64_t **res = allocMatrix(rows, cols); // Ex. 1
-  // int64_t last_row, last_col;
-  // last_row = -1;
-  // last_col = -1;
-  // // short int ok = 1;
-
-  // // while (ok) {
-  //   for (size_t i = 0; i < rows; i++) { // Ex. 2
-  //     for (size_t j = 0; j < cols; j++) {
-  //       printf("arr[%zu][%zu]: ", i, j);
-  //       scanf("%ld", &res[i][j]);
-  //       // TODO: Allow for an "end of feed" character that tells the program to
-  //       // populate the remaining slots with RNG values
-  //       if (res[i][j] == END_LOOP_FEED) { // Assume the user wants the rest of
-  //                                         // the values to be generated
-  //         last_row = i;
-  //         last_col = j;
-  //         // ok = -1;
-  //         break;
-  //       }
-  //     }
-  //   // }
-  //   // ok = -1;
-  // }
 
   size_t max_indx;
   printf("Dimensiune tablou: ");
@@ -427,11 +386,14 @@ int main() {
   /* Populate the remaining arrays with RNG values */
   int64_t *tmp_a = RNGArray(max_indx - last_indx); // Ex. 3
   for (size_t i = 0; i < max_indx - last_indx; i++){
-    printf("tmp_a[%zu] = %zu\n", i, tmp_a[i]);
+    #if DEBUG
+      printf("tmp_a[%zu] = %zu\n", i, tmp_a[i]);
+    #endif
     res[i + last_indx] = tmp_a[i];
   }
-  printf("Nesortat: \n");
+  printf("====START Nesortat==== \n");
   printArray(res, max_indx);
+  printf("====END Nesortat==== \n");
 
   FILE *fp;
   fp = fopen("unsorted.txt", "w");
@@ -443,10 +405,11 @@ int main() {
 
   system("gnuplot -e \"set terminal png; set output 'unsorted.png'; plot 'unsorted.txt' with lines\"");
 
-
   XSortArray(res, max_indx, choice); // Ex. 4
-  printf("Sortat: \n");
+  printf("====START Sortat==== \n");
   printArray(res, max_indx); // Ex. 5
+  printf("====END Sortat==== \n");
+
   fp = fopen("sorted.txt", "w");
 
   for (size_t i = 0; i < max_indx; i++){
@@ -454,27 +417,8 @@ int main() {
   }
   fclose(fp);
 
-  system("gnuplot -e \"set terminal png; set title 'PC Laborator 4: Algoritmi sortare'; set output 'sorted.png'; set grid; plot 'sorted.txt' with lines title 'Sortat', 'unsorted.txt' with lines title 'Nesortat' \"");
+  system("gnuplot -e \"set terminal png; set output 'sorted.png'; plot 'sorted.txt' with lines title 'Sortat'\"");
+
+  system("gnuplot -e \"set terminal png; set title 'PC Laborator 4: Algoritmi sortare'; set output 'combined.png'; set grid; plot 'sorted.txt' with lines title 'Sortat', 'unsorted.txt' with lines title 'Nesortat' \"");
   free(res); // Ex. 6
-
-  // printf("(Last_row, last_col): (%zu, %zu)\n", last_row, last_col); // FIXME: Displays (Last_row, last_col): (18446744073709551615, 18446744073709551615)
-
-  // TODO: Figure out whether to linearize the matrix (treat all the rows of a matrix as one long array) or to sort each individual array within the matrix. This is ambiguous, so I will propose the latter.
-
-  // TODO: Ex. 3
-
-
-
-
-  // printf("Nesortat:\n");
-  // printMatrix(res, rows, cols);
-
-  // for (size_t i = 0; i < rows; i++){ // Ex. 4
-  //   XSortArray(res[i], cols, choice);
-  // }
-
-  // printf("Sortat: \n");
-  // printMatrix(res, rows, cols); // Ex. 5
-  // free(res); // Ex. 6
-  /* END Matrix support area */
 }
