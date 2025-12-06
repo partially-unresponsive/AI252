@@ -25,7 +25,7 @@ class MarkdownApp(App):
         Binding("f", "forward", "Forward", tooltip="Navigate forward"),
     ]
 
-    path = var(Path(__file__).parent / "demo.md")
+    path = var(Path(__file__).parent / "lab5.md")
 
     @property
     def markdown_viewer(self) -> MarkdownViewer:
